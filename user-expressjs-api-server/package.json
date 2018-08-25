@@ -1,7 +1,7 @@
 {
   "name": "user-expressjs-server",
   "version": "1.0.0",
-  "description": "User Server for Professional Network PWA",
+  "description": "User Server for Mern Social Network PWA",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://vipinswarnkar1989@bitbucket.org/codejsIn/professional-network.git"
+    "url": "git+https://github.com/bipinswarnkar1989/mern-social-network-pwa.git"
   },
   "keywords": [
     "react-pwa"
   ],
   "author": "Bipin Swarnkar",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/codejsIn/professional-network#readme",
+  "homepage": "https://github.com/bipinswarnkar1989/mern-social-network-pwa.git#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "connect-busboy": "0.0.2",
