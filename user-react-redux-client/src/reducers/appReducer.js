@@ -2,7 +2,7 @@ const initialState = {
     isLoading:false,
     showAppBar:true,
     showSearchBar:false,
-    appBarTitle:'TokenAuthPWA'
+    appBarTitle:'MernSocial'
 }
 
 const appReducer = (currentSate = initialState, action) => {
