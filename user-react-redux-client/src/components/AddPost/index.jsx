@@ -98,38 +98,7 @@ class AddPost extends Component {
             files:this.state.files.concat(Array.from(event.target.files))
         })
     }
-    handleImageUpload(event){
-        //var elem = document.getElementById("myBar");  
-        let _this = this; 
-        var width = 0;
-        var output = document.getElementById('output');
-        const data = new FormData();
-        data.append('file', event.target.files[0]);
-        data.append('user', this.props.auth.user._id);
-        //data.append('description', 'some value user types');
-         console.log(event.target.files[0])
-        var config = {
-            onUploadProgress: function(progressEvent) {
-              var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-              let progress = percentCompleted + '%'; 
-                _this.setState({
-                    uploadProgress:percentCompleted
-                })
-              console.log(percentCompleted);
-              output.innerHTML = percentCompleted;
-            }
-          };
-
-          axios.post(`${API}/posts/v1/`, data, config)
-          .then(function (res) {
-            output.className = 'output';
-            //output.innerHTML = res.data;
-          })
-          .catch(function (err) {
-            output.className = 'output text-danger';
-            output.innerHTML = err.message;
-          });
-    }
+   
 
     handleImageChange(event){
       var _this = this;
@@ -150,23 +119,49 @@ class AddPost extends Component {
              _this.setState({
                  files:newArray
              })
+             _this.handleUpload(currentItem, _this);
             }
             reader.readAsDataURL(currentItem);
       }
       console.log(this.state.files)
     }
 
-    setImagePreview(file){
-      var _this = this;
-      var reader = new FileReader();
-       reader.onload = (r) => {
-           let preview =  r.target.result;
-           _this.setState({
-               tempBinary:preview
-           })
-       }
-       reader.readAsDataURL(file);
-       return this.state.tempBinary;
+
+    handleUpload(file, _this){
+      console.log(file);
+      let key = file.size+file.lastModified;
+      console.log(key);
+      var output = document.getElementById('output');
+        const data = new FormData();
+        data.append('file', file);
+        data.append('user', this.props.auth.user._id);
+
+        var config = {
+            onUploadProgress: function(progressEvent) {
+              var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+              let progress = percentCompleted + '%'; 
+                let files = _this.state.files.map((f) => {
+                    if (f.key === key) {
+                        f.uploadProgress = percentCompleted;
+                        return f;
+                    }
+                    return f;
+                })
+                _this.setState({
+                    files:files
+                })
+            }
+          };
+
+          axios.post(`${API}/posts/v1/`, data, config)
+          .then(function (res) {
+            output.className = 'output';
+            //output.innerHTML = res.data;
+          })
+          .catch(function (err) {
+            output.className = 'output text-danger';
+            output.innerHTML = err.message;
+          });
     }
 
     render() {
@@ -218,9 +213,6 @@ class AddPost extends Component {
 
         <div className={classes.submitBtnDiv}>
         <div id="output" className="output"></div>
-        <div className={classes.progressDiv}>
-        <div id="myBar" className="w3-container w3-green w3-center" style={{width:`${this.state.uploadProgress}%`}}>{this.state.uploadProgress}%</div>
-  </div>
         <Button variant="contained" size="large" color="primary" className={classes.submitbutton}>
           Post
         </Button>
