@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(busboy({ immediate: true }));
 
 //mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_DEV_URI);
 
 
 app.use('/api/v1', apiRoutes);

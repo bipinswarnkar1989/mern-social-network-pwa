@@ -84,7 +84,8 @@ class AddPost extends Component {
         super(props);
         this.state = {
             files:[],
-            uploadProgress:0
+            uploadProgress:0,
+            tempBinary:null
         }
     }
     
@@ -129,6 +130,45 @@ class AddPost extends Component {
             output.innerHTML = err.message;
           });
     }
+
+    handleImageChange(event){
+      var _this = this;
+      let files = event.target.files;
+      for (let index = 0; index < files.length; index++) {
+          const currentItem = files[index];
+             var reader = new FileReader();
+             reader.onload = (r) => {
+            let newElement = {
+                key:currentItem.size+currentItem.lastModified,
+                lastModified:currentItem.lastModified,
+                size:currentItem.size,
+                preview:r.target.result,
+                uploadProgress:0
+            }
+            console.log(newElement)
+            let newArray = [ ...this.state.files, newElement ];
+             _this.setState({
+                 files:newArray
+             })
+            }
+            reader.readAsDataURL(currentItem);
+      }
+      console.log(this.state.files)
+    }
+
+    setImagePreview(file){
+      var _this = this;
+      var reader = new FileReader();
+       reader.onload = (r) => {
+           let preview =  r.target.result;
+           _this.setState({
+               tempBinary:preview
+           })
+       }
+       reader.readAsDataURL(file);
+       return this.state.tempBinary;
+    }
+
     render() {
         const { classes } = this.props;
         const { isLoggedIn, user, error } = this.props.auth;
@@ -168,7 +208,7 @@ class AddPost extends Component {
             <div className={classes.addMedia}>
             <div><div className="_5cqb"><span>
                 <div aria-label="Add photo" className="_vbz" tabIndex="0">
-                <input multiple onChange={e => this.handleImageUpload(e)} accept="image/*" type="file" name="file" className={classes.fileInput}/><div className="_4g33"><div className="_2-24 _4g34 _5i2i _52we"><div className="_vbx"><div className="_vby"></div><div className="_vbw">Photo</div></div></div></div></div>
+                <input multiple onChange={e => this.handleImageChange(e)} accept="image/*" type="file" name="file" className={classes.fileInput}/><div className="_4g33"><div className="_2-24 _4g34 _5i2i _52we"><div className="_vbx"><div className="_vby"></div><div className="_vbw">Photo</div></div></div></div></div>
 
             <div aria-label="Add Video" className="_vbz"  tabIndex="0" role="button"><div className="_4g33">
             <input accept="video/*" type="file" className={classes.fileInput}/>
@@ -188,7 +228,20 @@ class AddPost extends Component {
         {/* <div ariaLabel="Add photo" className="_vbz" tabIndex="0" role="button"><div className="_4g33"><div className="_2-24 _4g34 _5i2i  _52we"><div className="_vbx"><div className="_vby"></div><div className="_vbw">Photo</div></div></div></div></div> */}
         
         
-
+         <div style={{display:'flex', flexDirection:'row'}}>
+            {this.state.files && this.state.files.length > 0 &&
+               this.state.files.map((item) => {
+                   return (
+                    <div style={{padding:4, backgroundColor:'white', margin:3}} key={item.key}>
+                    <img src={item.preview} width='300' height='200'/>
+                    <div>
+        <div id="myBar" className="w3-container w3-green w3-center" style={{width:`${item.uploadProgress}%`}}>{item.uploadProgress}%</div>
+  </div>
+                    </div>
+                   )
+               })
+            } 
+         </div>
 
         
             </div>
