@@ -227,7 +227,10 @@ class AddPost extends Component {
                     <div style={{padding:4, backgroundColor:'white', margin:3}} key={item.key}>
                     <img src={item.preview} width='300' height='200'/>
                     <div>
-        <div id="myBar" className="w3-container w3-green w3-center" style={{width:`${item.uploadProgress}%`}}>{item.uploadProgress}%</div>
+                    <div style={{border:'1px solid #77B5EE'}} className='progress_outer'>
+               <div style={{width:`${item.uploadProgress}%`, backgroundColor:'#77B5EE', height:20, transition:'width 2.5s ease'}} id='_progress' className='progress'></div>
+               </div>
+       
   </div>
                     </div>
                    )
