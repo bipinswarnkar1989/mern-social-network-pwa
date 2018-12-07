@@ -8,6 +8,11 @@ const postSchema = new Schema({
         type:Schema.ObjectId,
         ref:'User'
     },
+    mediaType:{
+       type: String,
+       required: true,
+       enum: ['video', 'image']
+    },
     title:{
         type:'String',
         es_indexed:true
