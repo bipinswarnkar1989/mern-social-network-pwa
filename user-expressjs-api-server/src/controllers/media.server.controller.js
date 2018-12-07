@@ -88,7 +88,7 @@ export default class mediaController {
         }
     }
     uploadVideo (req,res,next) {
-        Upload(req,res,(err) => {
+      videoUpload(req,res,(err) => {
           if(err){
             console.log('ERROR:'+err);
             return res.json({'success':false,'message':err});
@@ -99,7 +99,7 @@ export default class mediaController {
         });
       }
     uploadImage(req,res,next) {
-        Upload(req,res,(err) => {
+        imageUpload(req,res,(err) => {
                if(err){
                  console.log('ERROR:'+err);
                  return res.json({'success':false,'message':err});

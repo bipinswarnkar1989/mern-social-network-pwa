@@ -124,11 +124,11 @@ import jwt from 'jsonwebtoken';
      }
   }
 
-  async editUser(req,res) {
+   editUser(req,res) {
     console.log(`userEdit: ${JSON.stringify(req.body)}`);
     let uid = req.user._id;
     if (req.body && uid) {
-      await User.findByIdAndUpdate(uid, req.body, { new:true }, (err,user) => {
+       User.findByIdAndUpdate(uid, req.body, { new:true }, (err,user) => {
         if(err){
           console.log(err);
           return res.json({
